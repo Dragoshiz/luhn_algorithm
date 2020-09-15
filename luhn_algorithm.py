@@ -1,29 +1,34 @@
-card_num = input('Credit card number: ')
+# Luhn's algorithm is used to verify if a card number is valid
+
+card = input('Enter card number: ')
 
 
-def check_card_validation(card):
-    num_digits = len(card)
+def validation(card):
+    digits = len(card)
+    if card.isnumeric():
 
-    if card.isdecimal():
-        while num_digits != 16:
-            raise ValueError
-        last_num = int(card[-1])
-        rest = card[:-1]
-        reverse_rest = rest[::-1]
-        reverse_rest = list(map(int, reverse_rest))
-        for i in range(len(reverse_rest)):
-            if i % 2 == 0:
-                reverse_rest[i] *= 2
-        for i in range(len(reverse_rest)):
-            if reverse_rest[i] > 9:
-                reverse_rest[i] -= 9
-        result = sum(reverse_rest) % 10
-        if result == last_num:
-            print("Valid Credit Card!")
+        while digits != 16:
+            print('Must have 16 digits')
+            break
+        num_list = [int(x) for x in str(card)]
+        multiplied = []
+
+        for num in range(len(num_list)):
+            if num % 2 == 0:
+                num_list[num] *= 2
+            num_list[num] *= 1
+            multiplied.append(num_list[num])
+
+        last = []
+        for i in multiplied:
+            if i > 9:
+                i = sum([int(digit) for digit in str(i)])
+            last.append(i)
+
+        if sum(last) % 10 != 0:
+            print('Invalid card!')
         else:
-            print("Invalid Credit Card")
-    else:
-        print("Check if your Credit Card number is correct")
+            print('Valid card!')
 
 
-check_card_validation(card_num)
+validation(card)
